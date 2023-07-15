@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+  	.watermark {
+      position: fixed;
+      bottom: 10px;
+      right: 10px;
+      font-size: 14px;
+      color: rgba(0, 0, 0, 0.3);
+    }
+    .button-container {
+      position: fixed;
+      bottom: 10px;
+      left: 10px;
+    }
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px 16px;
+      background-color: #FF80AB;
+      color: #FFFFFF;
+      font-size: 14px;
+      border: none;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      text-decoration: none;
+      height: 32px;
+    }
+    
+    .whatsapp {
+      background-color: #25D366;
+    }
+    
+    .instagram {
+      background-color: #E4405F;
+    }
+    
+    .button img {
+      width: 20px;
+      height: 20px;
+      margin-right: 8px;
+    }
+    
+    body {
+      background-color: #F6EEF3;
+      font-family: 'Comic Sans MS', cursive;
+      text-align: center;
+    }
+
+    h1 {
+      color: #FF80AB;
+    }
+
+    p {
+      color: #4C4C6D;
+    }
+
+    #result {
+      font-weight: bold;
+    }
+
+    .feedback {
+      width: 150px;
+      height: 150px;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: contain;
+      margin: 20px auto;
+    }
+
+    #score {
+      font-size: 18px;
+      margin-top: 20px;
+    }
+
+    .correct {
+      background-image: url('https://i.ibb.co/hmQZgxD/kisspng-check-mark-computer-icons-clip-art-green-check-mark-2-icon-5ab1d1c074ab99-008411241521603008.png'); /* Ganti URL dengan URL gambar centang */
+    }
+
+    .incorrect {
+      background-image: url('https://i.ibb.co/qBxCFF0/kisspng-x-mark-check-mark-desktop-wallpaper-clip-art-x-mark-5ac194d4bec907-7595189015226359887815.png'); /* Ganti URL dengan URL gambar tanda silang */
+    }
+  </style>
+</head>
+<body>
+  <h1>Tebak Penjumlahan, Pengurangan, Perkalian, dan Pembagian</h1>
+  <p>Masukkan jawaban yang benar untuk operasi matematika berikut:</p>
+  <div id="question"></div>
+  <input type="number" id="answer">
+  <button onclick="checkAnswer()">Tebak</button>
+  <button onclick="skipQuestion()">Skip</button>
+  <p id="result"></p>
+  <p id="score">Skor: 0</p>
+
+  <div id="feedbackContainer"></div>
+  <div class="watermark">Dibuat oleh @bosrvan</div>
+
+  <div class="button-container">
+    <div id="feedbackContainer"></div>
+    <a class="button whatsapp" href="https://api.whatsapp.com/send?phone=6285394408301">
+      <img src="http://logo-logos.com/2016/10/WhatsApp_logo_icon.png" alt="WhatsApp logo, logotype">
+      WhatsApp
+    </a>
+
+    <div id="feedbackContainer"></div>
+    <a class="button instagram" href="https://www.instagram.com/bosrvan">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1024px-Instagram_logo_2022.svg.png" alt="Instagram Logo">
+      Instagram
+    </a>
+
+    <a class="button game-baru" href="jodohrate.html">
+      <img src="https://i.ibb.co/B4XFSTB/pngwing-com.png" alt="Game Baru">
+      Game Baru
+    </a>
+  </div>
+
+  <script>
+    var operation, num1, num2, correctAnswer;
+    var questionElement = document.getElementById('question');
+    var resultElement = document.getElementById('result');
+    var scoreElement = document.getElementById('score');
+    var score = 0;
+
+    generateQuestion();
+
+    function generateQuestion() {
+      var operations = ['+', '-', 'x', ':'];
+      operation = operations[Math.floor(Math.random() * operations.length)];
+
+      num1 = Math.floor(Math.random() * 20) + 1;
+      num2 = Math.floor(Math.random() * 20) + 1;
+
+      switch (operation) {
+        case '+':
+          correctAnswer = num1 + num2;
+          break;
+        case '-':
+          correctAnswer = num1 - num2;
+          break;
+        case 'x':
+          correctAnswer = num1 * num2;
+          break;
+        case ':':
+          // Ensure the division has a whole number result
+          num1 = num2 * Math.floor(Math.random() * 10) + 1;
+          correctAnswer = num1 / num2;
+          break;
+      }
+
+      questionElement.textContent = num1 + ' ' + operation + ' ' + num2 + ' =';
+
+      resultElement.textContent = '';
+      document.getElementById('answer').value = '';
+      document.getElementById('feedbackContainer').innerHTML = '';
+    }
+
+    function checkAnswer() {
+      var answer = parseFloat(document.getElementById('answer').value);
+      var feedbackContainer = document.getElementById('feedbackContainer');
+
+      if (isNaN(answer)) {
+        resultElement.textContent = 'Masukkan jawaban yang valid.';
+      } else {
+        var result;
+        switch (operation) {
+          case '+':
+            result = num1 + num2;
+            break;
+          case '-':
+            result = num1 - num2;
+            break;
+          case 'x':
+            result = num1 * num2;
+            break;
+          case ':':
+            result = num1 / num2;
+            break;
+        }
+
+        if (answer === result) {
+          resultElement.textContent = 'Selamat, jawaban Anda benar!';
+          showFeedback(feedbackContainer, 'correct');
+          score += 5;
+          scoreElement.textContent = 'Skor: ' + score;
+          setTimeout(generateQuestion, 2000);
+        } else {
+          resultElement.textContent = 'Maaf, jawaban Anda salah. Silakan coba lagi.';
+          showFeedback(feedbackContainer, 'incorrect');
+        }
+      }
+    }
+
+    function skipQuestion() {
+      generateQuestion();
+    }
+
+    function showFeedback(container, feedbackType) {
+      var feedback = document.createElement('div');
+      feedback.classList.add('feedback');
+      feedback.classList.add(feedbackType);
+      container.innerHTML = '';
+      container.appendChild(feedback);
+    }
+  </script>
+</body>
+</html>

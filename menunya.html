@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta content='width=device-width, initial-scale=1, user-scalable=1, minimum-scale=1, maximum-scale=5' name='viewport'/>
+  <meta content='IE=edge' http-equiv='X-UA-Compatible'/>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.all.min.js"></script>
+  <title>Tampilan Awal</title>
+  <style>
+    body {
+      font-family: 'Comic Sans MS', sans-serif;
+      background-image: url('https://telegra.ph/file/9896f8d392d969cb8de19.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      height: 100vh;
+    }
+    
+  @keyframes blink {
+      0% { color: #8F46B3; }
+      50% { color: #40E0D0; }
+      100% { color: #8F46B3; }
+    }
+
+    #marquee-text {
+      animation: blink 0.5s linear infinite;
+    }
+    
+    #namePlaceholder {
+      animation: blink 0.5s linear infinite;
+    }
+    
+    #menu {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background-color: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(5px);
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    }
+
+    #menu .logo {
+      font-size: 20px;
+      color: #fff;
+      margin-bottom: 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+    }
+
+    #menu .logo::after {
+      content: '\25BE';
+      font-size: 14px;
+      margin-left: 5px;
+    }
+
+    #menu.open .logo::after {
+      content: '\25B4';
+    }
+
+    #menu .menu-items {
+      display: none;
+      flex-direction: column;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+    }
+
+    #menu.open .menu-items {
+      display: flex;
+      max-height: 500px;
+    }
+
+    #menu .menu-items a {
+      color: #fff;
+      text-decoration: none;
+      padding: 10px 20px;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      background-color: #555;
+    }
+
+    #menu .menu-items a:hover {
+      background-color: #777;
+    }
+
+    #date {
+      text-align: center;
+      margin-top: 10px;
+      font-size: 14px;
+      color: #ccc;
+    }
+
+    #time {
+      font-size: 36px;
+      color: #fff;
+      margin-bottom: 10px;
+    }
+
+    #watermark {
+      position: fixed;
+      bottom: 10px;
+      right: 10px;
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.3);
+    }
+  </style>
+</head>
+
+<body>
+	
+<div id="menu">
+  <marquee behavior="scroll" direction="left" scrollamount="6">
+      <h id="marquee-text">SELAMAT DATANG</h>
+      <span id="namePlaceholder"></span>
+    </marquee>
+    <div class="logo" onclick="toggleMenu()">TAP HERE</div>
+  <div class="menu-items">
+    <a href="jodohrate.html">RATE JODOH</a>
+    <a href="hitungan.html">LATIHAN PENJUMLAHAN</a>
+    <a href="#">Menu 3</a>
+    <a href="https://chat.whatsapp.com/IlgBVFEeO7I8F4K5RkhSIX">GRUP WHATSAPP</a>
+    <a href="https://instagram.com/bosrvan/">CREATOR</a>
+  </div>
+</div>
+
+  <div id="date">
+    <div id="time"></div>
+    <span id="current-date"></span>
+  </div>
+
+  <div id="watermark">Creator by @bosrvan</div>
+
+  <script>
+    function getCurrentDate() {
+      var date = new Date();
+      var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+      return date.toLocaleDateString('en-US', options);
+    }
+
+    function getCurrentTime() {
+      var date = new Date();
+      var hours = date.getHours();
+      var minutes = date.getMinutes();
+      var seconds = date.getSeconds();
+
+      // Tambahkan angka 0 di depan angka satu digit
+      hours = (hours < 10) ? "0" + hours : hours;
+      minutes = (minutes < 10) ? "0" + minutes : minutes;
+      seconds = (seconds < 10) ? "0" + seconds : seconds;
+
+      return hours + ":" + minutes + ":" + seconds;
+    }
+
+    var currentDateElement = document.getElementById('current-date');
+    currentDateElement.innerHTML = getCurrentDate();
+
+    var currentTimeElement = document.getElementById('time');
+    currentTimeElement.innerHTML = getCurrentTime();
+
+    // Perbarui waktu setiap detik
+    setInterval(function() {
+      currentTimeElement.innerHTML = getCurrentTime();
+    }, 1000);
+
+    function toggleMenu() {
+      var menu = document.getElementById('menu');
+      menu.classList.toggle('open');
+    }
+    
+  </script>
+  <script type="text/javascript">
+    async function askForName() {
+      const { value: name } = await Swal.fire({
+        title: 'Masukkan Nama Anda',
+        input: 'text',
+        inputAttributes: {
+          autocapitalize: 'off'
+        },
+        showCancelButton: false,
+        confirmButtonText: 'Simpan',
+        customClass: {
+          confirmButton: 'swal-button',
+          cancelButton: 'swal-button'
+        },
+        showLoaderOnConfirm: true,
+        preConfirm: (name) => {
+          return new Promise((resolve) => {
+            // Validasi nama
+            if (name && /^[A-Za-z\s]+$/.test(name)) {
+              resolve();
+            } else {
+              Swal.showValidationMessage('Nama tidak valid. Nama tidak boleh mengandung angka.');
+            }
+          });
+        },
+        allowOutsideClick: false
+      });
+
+      if (name) {
+        // Simpan nama ke penyimpanan lokal atau cookie jika perlu
+        // Contoh: localStorage.setItem("namaPengguna", name);
+
+        // Ganti teks pada elemen menu dengan nama pengguna
+        var namePlaceholder = document.getElementById('namePlaceholder');
+        namePlaceholder.textContent = name.toUpperCase();
+      }
+    }
+
+    window.onload = askForName;
+  </script>
+</body>
+</html>

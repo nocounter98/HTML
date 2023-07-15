@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Rate Jodoh</title>
+    <style>
+        body {
+            background-color: pink;
+            color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.5;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 32px;
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        form {
+            display: inline-block;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+
+        input[type="text"] {
+            padding: 8px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            width: 250px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #ff69b4;
+            border: none;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #hasilRatingJodoh {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        #persentaseRatingJodoh {
+            font-size: 28px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        #kataSemangat {
+            margin-top: 30px;
+            font-size: 20px;
+        }
+
+        .error-message {
+            color: #ff0000;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+ 	.watermark {
+      position: fixed;
+      bottom: 10px;
+      right: 10px;
+      font-size: 14px;
+      color: rgba(0, 0, 0, 0.3);
+    }
+
+        .game-button {
+            margin-top: 20px;
+        }
+        
+        .button img {
+      width: 20px;
+      height: 20px;
+      margin-right: 8px;
+    }
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px 16px;
+      background-color: #FF80AB;
+      color: #FFFFFF;
+      font-size: 14px;
+      border: none;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      text-decoration: none;
+      height: 32px;
+    }
+    </style>
+</head>
+<body>
+    <h1>Selamat datang di <span style="color: #ff69b4;">Rate Jodoh</span>!</h1>
+
+    <form>
+        <label for="namaAnda">Nama Anda:</label>
+        <input type="text" id="namaAnda" required><br>
+        <span class="error-message" id="namaAndaError"></span><br>
+
+        <label for="namaPasangan">Nama Pasangan:</label>
+        <input type="text" id="namaPasangan" required><br>
+        <span class="error-message" id="namaPasanganError"></span><br>
+
+        <button type="button" onclick="hitungRatingJodoh()">Hitung Rating Jodoh</button>
+    </form>
+
+    <div id="hasilRatingJodoh" style="display: none;">
+        <h2>Hasil rating jodoh untuk <span id="spanNamaAnda"></span> dan <span id="spanNamaPasangan"></span> &#128152;</h2>
+        <p id="persentaseRatingJodoh"></p>
+        <p id="kataSemangat"></p>
+    </div>
+
+    <div class="watermark" style="font-family: 'Comic Sans MS', cursive;">@bosrvan</div>
+
+<a class="button game-baru" href="jodohrate.html">
+      <img src="https://i.ibb.co/B4XFSTB/pngwing-com.png" alt="Game Baru">
+      Game Baru
+
+    <script>
+        function hitungRatingJodoh() {
+            // Mengambil nilai dari input
+            var namaAnda = document.getElementById("namaAnda").value;
+            var namaPasangan = document.getElementById("namaPasangan").value;
+
+            // Menghapus pesan error sebelumnya
+            document.getElementById("namaAndaError").innerText = "";
+            document.getElementById("namaPasanganError").innerText = "";
+
+            // Memeriksa apakah kolom pengisian kosong
+            if (!namaAnda) {
+                document.getElementById("namaAndaError").innerText = "Nama Anda harus diisi";
+                return;
+            }
+
+            if (!namaPasangan) {
+                document.getElementById("namaPasanganError").innerText = "Nama Pasangan harus diisi";
+                return;
+            }
+
+            // Menghitung rating jodoh
+            var ratingJodoh = Math.floor(Math.random() * 101); // Menghasilkan angka acak antara 0 hingga 100
+
+            // Menampilkan hasil rating jodoh
+            document.getElementById("spanNamaAnda").innerText = namaAnda;
+            document.getElementById("spanNamaPasangan").innerText = namaPasangan;
+            document.getElementById("persentaseRatingJodoh").innerText = "Rating Jodoh: " + ratingJodoh + "%";
+
+            // Menampilkan kata-kata semangat berdasarkan rating jodoh
+            var kataSemangat = document.getElementById("kataSemangat");
+
+            if (ratingJodoh >= 90) {
+                kataSemangat.innerText = "Hubunganmu adalah impian setiap pasangan. Tetap jaga keharmonisan dan selalu saling mendukung!";
+            } else if (ratingJodoh >= 80) {
+                kataSemangat.innerText = "Hubunganmu sangat kuat dan penuh kasih sayang. Nikmati setiap momen bersama pasangan!";
+            } else if (ratingJodoh >= 70) {
+                kataSemangat.innerText = "Hubunganmu memiliki dasar yang solid. Teruslah membangun kepercayaan dan komunikasi yang baik!";
+            } else if (ratingJodoh >= 60) {
+                kataSemangat.innerText = "Kamu dan pasanganmu memiliki potensi besar untuk memperbaiki hubungan. Jangan pernah berhenti berusaha!";
+            } else if (ratingJodoh >= 50) {
+                kataSemangat.innerText = "Hubunganmu memerlukan sedikit perhatian dan perbaikan. Bersama, kalian bisa mengatasinya!";
+            } else {
+                kataSemangat.innerText = "Hubunganmu sedang mengalami tantangan. Tetaplah bersabar dan berkomitmen untuk memperbaikinya!";
+            }
+
+            document.getElementById("hasilRatingJodoh").style.display = "block";
+        }
+
+        function playGame() {
+            alert("Selamat bermain game selanjutnya!");
+        }
+    </script>
+</body>
+</html>
